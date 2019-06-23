@@ -1,0 +1,183 @@
+---
+title: "Família de funções Apply no R-Base"
+author: Vinícius Riffel
+date: June 22, 2019
+papersize: a4
+geometry: [bottom=1cm, left=2in, right=1.5in, top=2.5in]
+output:
+ pdf_document:
+   number_sections: true
+   template: default
+documentclass: article
+fontsize: 12pt
+header-includes:
+ - \usepackage[brazilian]{babel}
+ - \usepackage[utf8]{inputenc}
+ - \usepackage{graphicx}
+ - \usepackage{latexsym,amsmath,amsfonts,amssymb}
+ - \usepackage[longnamesfirst,sectionbib]{natbib}
+ - \usepackage{amsmath}
+ - \usepackage{amsfonts}
+ - \usepackage{amssymb}
+ - \usepackage{hyperref}
+ - \usepackage{blindtext}
+
+ - \newtheorem{theorem}{Defini\c{c}\~ao}
+
+ - \addtolength{\headsep}{-80pt}
+ - \addtolength{\textwidth}{100pt}
+ - \addtolength{\hoffset}{-50pt}
+ - \makeindex
+
+---
+
+\begin{normalsize}
+\begin{abstract}
+Aqui voc\^e encontrar\'a material sobre a fam\'ilia de fun\c{c}\~oes
+Apply no R. Na primeira parte \'e apresentado cada fun\c{c}\~ao com exemplo.
+Na segunda parte \'e apresentada aplica\c{c}\~oes das fun\c{c}\~oes.
+
+\end{abstract}
+
+\end{normalsize}
+
+\tableofcontents
+
+\newpage
+
+\section{Fun\c{c}\~ao apply}
+\subsection{Funcionamento}
+\begin{normalsize}
+  Aplica uma fun\c{c}\~ao pr\'e-determinada nas margens de uma array.
+  \footnote{Documenta\c{c}\a{~}o dispon\'ivel em: \\ \url{https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/apply}}
+
+\subsection{Argumentos}
+\begin{itemize}
+\item{\textbf{X}: Array com duas dimens\~oes}
+\item{\textbf{MARGIN}: Vetor indicando em que sentido a opera\c{c}\~ao ser\'a
+aplicada em \textbf{X}. 1 significa por linha e  2 singnifica por coluna.}
+\item{\textbf{FUN}: Fun\c{c}\~ao a ser aplicada.}
+\item{\textbf{...}: Argumentos opcionais para \textbf{FUN}.}
+\end{itemize}
+\subsection{Output}
+Retorna um vetor ou lista com o valor da fun\c{c}\~ao aplicada em X.
+\end{normalsize}
+
+\subsection{Exemplo}
+```{r}
+data(mtcars)
+apply(X = mtcars, MARGIN = 2, FUN = mean)
+
+```
+\begin{normalsize}
+\section{Fun\c{c}\~ao mapply}
+\subsection{Funcionamento}
+Aplica uma fun\c{c}\~ao nos elementos de uma array.
+
+\subsection{Argumentos}
+\begin{itemize}
+\item{\textbf{FUN}: Fun\c{c}\~ao a ser aplicada.}
+\item{\textbf{...}: Elemento a ser vetorizado.}
+\end{itemize}
+\textit{Para verificar todos os argumentos de \textbf{mapply} acesse a
+documenta\c{c}\~ao\footnote{\url{https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/mapply}}}
+\subsection{Output}
+Uma array com os valores de \textbf{FUN} aplicados a \textbf{X}
+\end{normalsize}
+\subsection{Exemplo}
+```{r}
+mapply(rep, 1:4, 4)
+```
+
+\begin{normalsize}
+\section{Fun\c{c}\~ao lapply}
+\subsection{Funcionamento}
+Aplica uma fun\c{c}\~ao em um vetor (lista ou atomic vetor).
+
+\subsection{Argumentos}
+Os principais argumentos s\~ao:\footnote{Para verificar todos os
+argumentos acesse a documenta\c{c}\~ao: \\ \url{https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/lapply}}
+\begin{itemize}
+\item{\textbf{X}: Vetor ou atomic vetor.}
+\item{\textbf{FUN}: Fun\c{c}\~ao a ser aplicada em \textbf{X}}
+\item{\textbf{...}: Argumentos opcionais de \textbf{FUN}}
+\end{itemize}
+
+\subsection{Output}
+Retorna uma lista do mesmo tamanho de \textbf{X}, cada elemento da lista
+\'e a fun\c{c}\~ao aplicada em \textbf{X} na correspondente posi\c{c}\~ao
+\end{normalsize}
+\subsection{Exemplo}
+```{r}
+lapply(X = mtcars, FUN = mean)
+```
+\begin{normalsize}
+\section{Fun\c{c}\~ao rapply}
+\subsection{Funcionamento}
+Aplica rescursivamente uma fun\c{c}\~ao em uma array (vetor ou atomic vetor).
+Pode ser visto como uma versão recursiva da fun\c{c}\~ao \textit{lapply}.
+\subsection{Argumentos}
+\begin{itemize}
+\item{\textbf{object}: Uma lista}.
+\item{\textbf{f}: A fun\c{c}\~ao que ser\'a aplicada}.
+\item{\textbf{...}: Argumentos opcionais de \textbf{f}}.
+
+\end{itemize}
+
+\textit{Para verificar todos os argumentos de \textbf{rapply} acesse a
+documenta\c{c}\~ao\footnote{\url{https://www.rdocumentation.org/packages/base/versions/3.6.0/topics/rapply}}}
+
+\subsection{Output}
+Retorna uma lista do mesmo tamanho de \textbf{X}, cada elemento da lista
+\'e a fun\c{c}\~ao aplicada em \textbf{X} na correspondente posi\c{c}\~ao
+\end{normalsize}
+\subsection{Exemplo}
+```{r}
+rapply(object =  mtcars, f = mean)
+```
+\section{Fun\c{c}\~ao tapply}
+\subsection{Funcionamento}
+Aplica uma fun\c{c}\~ao em grupos de uma array.
+
+\subsection{Argumentos}
+\begin{itemize}
+\item{\textbf{X}: Um objeto que seja poss\'ivel aplicar o m\'etodo \textit{split}}.
+\item{\textbf{INDEX}: Uma lista de fatores do mesmo tamanho de \textbf{X}.
+A lista ser\'a automaticamente convertida para um fator.}
+\item{\textbf{FUN}: Fun\c{c}\~ao ser a aplicada em \textbf{X}.}
+\item{\textbf{...}: Argumentos opcionais de \textbf{FUN}.}
+
+\end{itemize}
+
+\subsection{Output}
+Retorna um vetor com \textbf{FUN} aplicada em \textbf{X}.
+
+\subsection{Exemplo}
+```{r}
+n <- 17; fac <- factor(rep_len(1:3, n), levels = 1:5)
+tapply(1:n, fac, sum)
+```
+
+```{r}
+## Cálculo de probabilidades
+## Uma variável aletatória segue uma distribuição binomial de parâmetros
+## n = 250 e p = 0.17. Calcule o valor esperado de sucessos para os 50
+## primeiros experimentos.
+range <- seq(from = 0, to = 50, by = 1)
+system.time(
+    for (i in range) {
+        Ex <- dbinom(x = i, size = 250, prob = 0.17) * 50
+        Ex <- round(Ex, 2)
+        print(paste0("Valor esperado de sucessos para X = ", i, " É ", Ex))
+    }
+)
+
+## Com apply
+    fx <- function(x) {
+    Ex <- dbinom(x = x, size = 250, prob = 0.17) * 50
+    return(round(Ex, 2))
+}
+system.time(
+    lapply(X = 1:50, FUN = fx)
+)
+```
