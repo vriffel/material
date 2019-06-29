@@ -1,0 +1,123 @@
+
+---
+title: "Guia Rápido Para Funções do Git"
+author: Vinícius Riffel
+date: June 28, 2019
+papersize: a4
+geometry: [bottom=1cm, left=2in, right=1.5in, top=2.5in]
+output:
+ pdf_document:
+   number_sections: true
+   template: default
+documentclass: article
+fontsize: 12pt
+header-includes:
+ - \newcommand{\itab}[1]{\hspace{0em}\rlap{#1}}
+ - \newcommand{\tab}[1]{\hspace{.2\textwidth}\rlap{#1}}
+ - \usepackage[brazilian]{babel}
+ - \usepackage[utf8]{inputenc}
+ - \usepackage{graphicx}
+ - \usepackage{latexsym,amsmath,amsfonts,amssymb}
+ - \usepackage[longnamesfirst,sectionbib]{natbib}
+ - \usepackage{amsmath}
+ - \usepackage{amsfonts}
+ - \usepackage{amssymb}
+ - \usepackage{hyperref}
+ - \usepackage{blindtext}
+
+ - \newtheorem{theorem}{Defini\c{c}\~ao}
+
+ - \addtolength{\headsep}{-80pt}
+ - \addtolength{\textwidth}{100pt}
+ - \addtolength{\hoffset}{-50pt}
+ - \makeindex
+---
+```{r}
+library(rmarkdown)
+```
+
+\begin{abstract}
+Aqui voc\^e encontrar\'a um pequeno guia com as fun\c{c}\~oes b\'asicas
+do git. O objetivo \'e apenas apresentar as fun\c{c}\~oes, portanto, \'e
+necess\'ario que o leitor possua pr\'evios no funcionamento do git, bem
+como das fun\c{c}\~oes apresentadas. Assim, o material servir\'a apenas
+como consulta para o usu\'ario.
+\end{abstract}
+
+\newpage
+
+\section{git commit}
+\subsection{Opções}
+
+\subitem{\textbf{-m <msg>}} \newline
+  Coloca a mensagem do commit.
+\subitem{\textbf{-a -\--all}} \newline
+  Commita as alterações feitas nos arquivos já rastreados pelo git. \newline
+\textit{Note que este comando NÃO commita arquivos que não estejam com status
+"tracked"}.
+\subitem{\textbf{-F -\--file=<file>}} \newline
+  Commita com o conteúdo do arquivo como mensagem do commit.\newline
+  - para standart input.
+\subitem{\textbf{-\--author=<author>}} \newline
+  Altera o autor.
+\subitem{\textbf{-s -\--signoff}} \newline
+  Assina o commit com uma chave GPG.
+\subitem{\textbf{-\--date=<date>}} \newline
+  Altera a data.
+\subitem{\textbf{-\--amend}} \newline
+  Altera algum argumento do último commit anterior.
+  Por padrão é o argumento a ser alterado é a mensagem.
+\subitem{\textbf{-q -\--quiet}} \newline
+  Suprime o print dos outputs.
+
+\section{git add}
+\subsection{\textbf{Opções}}
+
+\subitem{\textbf{-n -\--dry-run}} \newline
+  Não adiciona os arquivos de fato, apenas mostra se eles existem e/ou
+  serão ignorados. \newline
+  Use \textbf{-\--ignore-missing} para checar se algum arquivo será ignorado,
+  estando no rastreado ou não.
+\subitem{\textbf{-f -\--force}} \newline
+  Força a adição dos arquivos.
+\subitem{\textbf{-e -\--edit}} \newline
+  Abre um editor de texto com um \textit{git diff}.
+\subitem{\textbf{-u -\--update}} \newline
+  Apenas modifica os arquivos já rastreados, não adiciona modifica arquivos
+  não rastreados.
+\subitem{\textbf{-\--ignore-errors}} \newline
+  Se houver erro, não aborta o \textit{git add}.
+
+
+\section{git status}
+\subsection{Opções}
+
+\subitem{\textbf{-u[<mode>] -\--untracked-files[=<mode>]}} \newline
+  Os modos são:
+  \subitem{\textit{no}}: Não mostra arquivos não rastreados.
+  \subitem{\textit{normal}}: Mostra arquivos não rastreados e diretórios.
+  \subitem{\textit{all}}: Mostra arquivos em diretórios não rastreados.
+
+\section{git push}
+\subsection{Opções}
+
+\subitem{\textbf{-n -\--dry-run}} \newline
+  Faz tudo, mas não envia as alterações.
+\subitem{\textbf{-d -\--delete}}\newline
+  Deleta arquivos especificados de um repositório remoto.
+\subitem{\textbf{-f -\--force}}\newline
+  Força o push.
+
+\section{\textbf{git remote}}
+\subsection{\textbf{Opções}}
+
+\subitem{\textbf{-v -\--verbose}} \newline
+  Mostra todas as urls remotas conectadas.
+
+\section{git clone}
+\subsection{Opções}
+\subitem{\textbf{-b <name>-\-- origin <name>}}
+  Clone trocando o nome do remote. Por padrão, o nome é \textit{origin}.
+
+
+\section{Corrigindo erros}
