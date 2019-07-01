@@ -43,8 +43,8 @@ codigo4 <- "xclip -sel clip < ~/.ssh/id\\_rsa.pub"
 \begin{abstract}
 Aqui voc\^e encontrar\'a um pequeno guia com as fun\c{c}\~oes b\'asicas
 do git. O objetivo \'e apenas apresentar as fun\c{c}\~oes, portanto, \'e
-necess\'ario que o leitor possua pr\'evios no funcionamento do git, bem
-como das fun\c{c}\~oes apresentadas. Assim, o material servir\'a apenas
+necess\'ario que o leitor possua conhecimentos pr\'evios no funcionamento do git, bem
+como das fun\c{c}\~oes apresentadas. Assim, este material servir\'a apenas
 como consulta para o usu\'ario.
 \end{abstract}
 
