@@ -1,4 +1,3 @@
-
 ---
 title: "Guia Rápido Para Funções do Git"
 author: Vinícius Riffel
@@ -24,31 +23,83 @@ header-includes:
  - \usepackage{amssymb}
  - \usepackage{hyperref}
  - \usepackage{blindtext}
-
- - \newtheorem{theorem}{Defini\c{c}\~ao}
+ - \usepackage{xcolor}
+ - \usepackage{lipsum}
+ - \usepackage{ntheorem}
+ - \usepackage{mdframed}
 
  - \addtolength{\headsep}{-80pt}
  - \addtolength{\textwidth}{100pt}
  - \addtolength{\hoffset}{-50pt}
  - \makeindex
 ---
-```{r}
+```{r echo = FALSE}
 library(rmarkdown)
+codigo1 <- "ssh-keygen -t rsa -b 4096 -C viniciusricardoriffel@gmail.com"
+codigo2 <- "eval \\$(ssh-agent -s)"
+codigo3 <- "ssh-add ~/.ssh/id\\_ra"
+codigo4 <- "xclip -sel clip < ~/.ssh/id\\_rsa.pub"
 ```
-
 \begin{abstract}
 Aqui voc\^e encontrar\'a um pequeno guia com as fun\c{c}\~oes b\'asicas
 do git. O objetivo \'e apenas apresentar as fun\c{c}\~oes, portanto, \'e
-necess\'ario que o leitor possua pr\'evios no funcionamento do git, bem
-como das fun\c{c}\~oes apresentadas. Assim, o material servir\'a apenas
+necess\'ario que o leitor possua conhecimentos pr\'evios no funcionamento do git, bem
+como das fun\c{c}\~oes apresentadas. Assim, este material servir\'a apenas
 como consulta para o usu\'ario.
 \end{abstract}
 
+\tableofcontents
 \newpage
 
-\section{git commit}
-\subsection{Opções}
+\section{Gerar Chave SSH}
+Para gerar uma chave SSH no github siga os seguintes passos:
+\begin{enumerate}
+\item{Cole o código no terminal:} \\
+\begin{mdframed}[backgroundcolor=blue!20]
+`r codigo1`
+\end{mdframed}
+\item{Digite o \textit{password} e cole os seguintes codigos:} \\
+\begin{mdframed}[backgroundcolor=blue!20]
+`r codigo2` \\
+`r codigo3`
+\end{mdframed}
+\item{Adicione a chave SSH no GitHub da seguinte forma}:
+\subitem{Copie a chave SSH para o \textit{clipboard}} \\
+\begin{mdframed}[backgroundcolor=blue!20]
+\textit{sudo apt-get install xclip} \\
+`r codigo4`
+\end{mdframed}
+\subitem{No GitHub, Settings, SSH, New SSH key, Key (cole a chave), Add.}
+\end{enumerate}
 
+\section{Pedir Ajuda}
+\textbf{git help}
+
+\section{Criar Repositório}
+\textbf{git init}
+
+\section{Adicionar Arquivo ao git}
+\textbf{git add}
+\subsection{\textbf{Opções}}
+
+\subitem{\textbf{-n -\--dry-run}} \newline
+  Não adiciona os arquivos de fato, apenas mostra se eles existem e/ou
+  serão ignorados. \newline
+  Use \textbf{-\--ignore-missing} para checar se algum arquivo será ignorado,
+  estando no rastreado ou não.
+\subitem{\textbf{-f -\--force}} \newline
+  Força a adição dos arquivos.
+\subitem{\textbf{-e -\--edit}} \newline
+  Abre um editor de texto com um \textit{git diff}.
+\subitem{\textbf{-u -\--update}} \newline
+  Apenas modifica os arquivos já rastreados, não adiciona modifica arquivos
+  não rastreados.
+\subitem{\textbf{-\--ignore-errors}} \newline
+  Se houver erro, não aborta o \textit{git add}.
+
+\section{Commitar Mudanças}
+\textbf{git commit}
+\subsection{Opções}
 \subitem{\textbf{-m <msg>}} \newline
   Coloca a mensagem do commit.
 \subitem{\textbf{-a -\--all}} \newline
@@ -70,35 +121,16 @@ como consulta para o usu\'ario.
 \subitem{\textbf{-q -\--quiet}} \newline
   Suprime o print dos outputs.
 
-\section{git add}
-\subsection{\textbf{Opções}}
+\section{Adicionar repositório Remoto}
+\textbf{git remote add}
+\subitem{\textbf{-v -\--verbose}} \newline
+  Mostra todas as urls remotas conectadas.
 
-\subitem{\textbf{-n -\--dry-run}} \newline
-  Não adiciona os arquivos de fato, apenas mostra se eles existem e/ou
-  serão ignorados. \newline
-  Use \textbf{-\--ignore-missing} para checar se algum arquivo será ignorado,
-  estando no rastreado ou não.
-\subitem{\textbf{-f -\--force}} \newline
-  Força a adição dos arquivos.
-\subitem{\textbf{-e -\--edit}} \newline
-  Abre um editor de texto com um \textit{git diff}.
-\subitem{\textbf{-u -\--update}} \newline
-  Apenas modifica os arquivos já rastreados, não adiciona modifica arquivos
-  não rastreados.
-\subitem{\textbf{-\--ignore-errors}} \newline
-  Se houver erro, não aborta o \textit{git add}.
+\section{Puxar Alteração do Repositório Remoto}
+\textbf{git pull}
 
-
-\section{git status}
-\subsection{Opções}
-
-\subitem{\textbf{-u[<mode>] -\--untracked-files[=<mode>]}} \newline
-  Os modos são:
-  \subitem{\textit{no}}: Não mostra arquivos não rastreados.
-  \subitem{\textit{normal}}: Mostra arquivos não rastreados e diretórios.
-  \subitem{\textit{all}}: Mostra arquivos em diretórios não rastreados.
-
-\section{git push}
+\section{Enviar os Arquivos Para os Repositórios Remoto}
+\textbf{git push}
 \subsection{Opções}
 
 \subitem{\textbf{-n -\--dry-run}} \newline
@@ -108,16 +140,33 @@ como consulta para o usu\'ario.
 \subitem{\textbf{-f -\--force}}\newline
   Força o push.
 
-\section{\textbf{git remote}}
-\subsection{\textbf{Opções}}
-
-\subitem{\textbf{-v -\--verbose}} \newline
-  Mostra todas as urls remotas conectadas.
-
-\section{git clone}
-\subsection{Opções}
+\section{Clonar Repositório}
+\textbf{git clone}
 \subitem{\textbf{-b <name>-\-- origin <name>}}
   Clone trocando o nome do remote. Por padrão, o nome é \textit{origin}.
 
+\section{Ver Commits Anteriores}
+\textbf{git log}
+
+\section{Navegar Pelo Histórico}
+\textbf{git checkout <commit>}
+
+\section{Status dos arquivos}
+\textbf{git status}
+\subsection{Opções}
+
+\subitem{\textbf{-u[<mode>] -\--untracked-files[=<mode>]}} \newline
+  Os modos são:
+  \subitem{\textit{no}}: Não mostra arquivos não rastreados.
+  \subitem{\textit{normal}}: Mostra arquivos não rastreados e diretórios.
+  \subitem{\textit{all}}: Mostra arquivos em diretórios não rastreados.
 
 \section{Corrigindo erros}
+\textbf{git revert <commit>}
+o **git revert** faz oposto do **git commit**.
+\subsection{Opções}
+\subitem{\textbf{-e -\--edit}} \newline
+  Argumento padrão se estiver usando um terminal, permite alterar a
+  mensagem do commit.
+\subitem{\textbf{-s -\--signoff}} \newline
+  Ver **git commit**
