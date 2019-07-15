@@ -1,0 +1,183 @@
+library(shiny)
+
+ui <- fluidPage(
+    titlePanel("Probability Distribution Functions"),
+    sidebarPanel(
+        selectInput(
+            inputId = "selection",
+            label = "Choose a distribution: ",
+            choices = c("Chi Square", "Normal", "Uniform", "Exponential",
+                        "Cauchy", "Snedecor (F)", "Gamma", "Beta",
+                        "Logistic", "Gosset (T)", "Binomial", "Poisson",
+                        "Geometric", "Hypergeometric",
+                        "Negative Binomial")),
+        conditionalPanel("input.selection == 'Chi Square'",
+                         sliderInput(inputId = "chisq.df", label = "DF",
+                                     min = 1, max = 5, value = 1,
+                                     step = 0.5)),
+        conditionalPanel("input.selection == 'Normal'",
+                         sliderInput(inputId = "norm.mean", label = "Mean",
+                                     min = -4, max = 4, value = 0,
+                                     step = 0.5),
+                         sliderInput(inputId = "norm.sd", label = "SD",
+                                     min = 0.1, max = 3, value = 1,
+                                     step = 0.1)),
+        conditionalPanel("input.selection == 'Uniform'",
+                         sliderInput(inputId = "unif.min", label = "Min.",
+                                     min = -3, max = 0, value = -1,
+                                     step = 0.1),
+                         sliderInput(inputId = "unif.max", label = "Máx.",
+                                     min = 0.1, max = 3, value = 1,
+                                     step = 0.1)),
+        conditionalPanel("input.selection == 'Exponential'",
+                         sliderInput(inputId = "exp.rate", label = "Rate",
+                                     min = 0.1, max = 5, value = 1,
+                                     step = 0.1)),
+        conditionalPanel("input.selection == 'Cauchy'",
+                         sliderInput(inputId = "cauchy.location",
+                                     label = "Location", min = -5, max = 5,
+                                     value = 0, step = 1),
+                         sliderInput(inputId = "cauchy.scale",
+                                     label = "Scale", min = 0.1, max = 5,
+                                     value = 1, step = 0.5)),
+        conditionalPanel("input.selection == 'Snedecor (F)'",
+                         sliderInput(inputId = "f.df1", label = "DF1",
+                                     min = 1, max = 10, value = 3,
+                                     step = 1),
+                         sliderInput(inputId = "f.df2", label = "DF2",
+                                     min = 1, max = 10, value = 2,
+                                     step = 1),
+                         sliderInput(inputId = "f.ncp", label = "NCP",
+                                     min = 1, max = 10, value = 1,
+                                     step = 1,)),
+        conditionalPanel("input.selection == 'Gamma'",
+                         sliderInput(inputId = "gamma.shape",
+                                     label = "Shape", min = 0.05, max = 5,
+                                     value = 2, step = 0.05),
+                         sliderInput(inputId = "gamma.rate", label = "Rate",
+                                     min = 0.05, max = 5, value = 3,
+                                     step = 0.05)),
+        conditionalPanel("input.selection == 'Beta'",
+                         sliderInput(inputId = "beta.shape1",
+                                     label = "Shape 1",
+                                     min = 1, max = 5, value = 2,
+                                     step = 0.05),
+                         sliderInput(inputId = "beta.shape2",
+                                     label = "Shape 2",
+                                     min = 1, max = 5, value = 3,
+                                     step = 0.05),
+                         sliderInput(inputId = "beta.ncp", label = "NCP",
+                                     min = 0, max = 10, value = 0,
+                                     step = 1)),
+        conditionalPanel("input.selection == 'Logistic'",
+                         sliderInput(inputId = "logis.location",
+                                     label = "Location", min = -2, max = 2,
+                                     value = 0, step = 0.05),
+                         sliderInput(inputId = "logis.scale",
+                                     label = "Scale", min = 1, max = 5,
+                                     value = 1, step = 0.5)),
+        conditionalPanel("input.selection == 'Gosset (T)'",
+                         sliderInput(inputId = "t.df", label = "DF", min = 1,
+                                     max = 20, value = 1, step = 1),
+                         sliderInput(inputId = "t.ncp", label = "NCP",
+                                     min = -5,  max = 5, value = 0,
+                                     step = 1)),
+        conditionalPanel("input.selection == 'Binomial'",
+                         sliderInput(inputId = "binom.size", label = "Size",
+                                     min = 1, max = 20, value = 10,
+                                     step = 1),
+                         sliderInput(inputId = "binom.prob",
+                                     label = "Probability", min = 0, max = 1,
+                                     value = 0.5, step = 0.05)),
+        conditionalPanel("input.selection == 'Poisson'",
+                         sliderInput(inputId = "pois.lambda",
+                                     label = "Lambda", min = 0, max = 10,
+                                     value = 1, step = 1)),
+        conditionalPanel("input.selection == 'Geometric'",
+                         sliderInput(inputId = "geom.prob",
+                                     label = "Probability", min = 0.05,
+                                     max = 1, value = 0.5, step = 0.05)),
+        conditionalPanel("input.selection == 'Hypergeometric'",
+                         sliderInput(inputId = "hyper.m", label = "m",
+                                     min = 0, max = 30, value = 5,
+                                     step = 1)),
+        conditionalPanel("input.selection == 'Negative Binomial'",
+                         sliderInput(inputId = "nbinom.size",
+                                     label = "Size",
+                                     min = 1, max = 10, value = 5,
+                                     step = 1),
+                         sliderInput(inputId = "nbinom.prob",
+                                     label = "Probability", min = 0,
+                                     max = 1, value = 0.5, step = 0.05))),
+        mainPanel(
+            plotOutput(outputId = "distPlot")
+        )
+)
+
+server <- function(input, output) {
+    funcInput <- reactive({
+        switch(input$selection,
+               "Chi Square" = {
+                   curve(dchisq(x, df = input$chisq.df), from = 0,
+                         to = 15, xlab = "x", ylab = "y")},
+               "Normal" = {
+                   curve(dnorm(x, mean = input$norm.mean,
+                               sd = input$norm.sd), from = -7, to = 7,
+                         xlab = "x", ylab = "y")},
+               "Uniform" = {
+                   curve(dunif(x, min = input$unif.min,
+                               max = input$unif.max), from = -4, to = 4,
+                         xlab = "x", ylab = "y")},
+               "Exponential" ={
+                   curve(dexp(x, rate = input$exp.rate), from = 0,
+                         to = 3, xlab = "x", ylab = "y")},
+               "Cauchy" = {
+                   curve(dcauchy(x, location = input$cauchy.location,
+                                 scale = input$cauchy.scale), from = -4,
+                         to = 4, xlab = "x", ylab = "y")},
+               "Snedecor (F)" = {
+                   curve(df(x, df1 = input$f.df1, df2 = input$f.df2,
+                            ncp = input$f.ncp), from = 0, to = 10,
+                         xlab = "x", ylab = "y")},
+               "Gamma" = {
+                   curve(dgamma(x, shape = input$gamma.shape,
+                                rate = input$gamma.rate), from = 0,
+                         to = 5, xlab = "x", ylab = "y")},
+               "Beta" = {
+                   curve(dbeta(x, shape1 = input$beta.shape1,
+                               shape2 = input$beta.shape2,
+                               ncp = input$beta.ncp), from = 0, to = 1,
+                         xlab = "x", ylab = "y")},
+               "Logistic" = {
+                   curve(dlogis(x, location = input$logis.location,
+                                scale = input$logis.scale), from = 5,
+                         to = -5, xlab = "x", ylab = "y")},
+               "Gosset (T)" = {
+                   curve(dt(x, df = input$t.df, ncp = input$t.ncp),
+                         from = -5, to = 5, xlab = "x", ylab = "y")},
+               "Binomial" = {
+                   curve(dbinom(x, size = input$binom.size,
+                                prob = input$binom.prob),  n = 21,
+                         type = "h", from = 0, to = 20, xlab = "x",
+                         ylab = "y")},
+               "Poisson" = {
+                   curve(dpois(x, lambda = input$pois.lambda), from = 0,
+                         to = 20, type = "h", xlab = "x", ylab = "y")},
+               "Geometric" = {
+                   curve(dgeom(x, prob = input$geom.prob), from = 0,
+                         to = 50, type = "h", xlab = "x", ylab = "y")},
+               "Hypergeometric" = {
+                   curve(dhyper(x, m = input$hyper.m, n = 10, k = 10),
+                         type = "h", from = 0, to = 10, xlab = "x",
+                         ylab = "y")},
+               "Negative Binomial" = {
+                   curve(dnbinom(x, size = input$nbinom.size,
+                                 prob = input$nbinom.prob), from = 0,
+                         to = 20, type = "h", xlab = "x", ylab = "y")})
+    })
+    output$distPlot <- renderPlot({
+        funcInput()
+    })
+}
+
+shinyApp(ui, server)
