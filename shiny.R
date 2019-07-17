@@ -31,8 +31,8 @@ ui <- fluidPage(
                                      step = 0.1)),
         conditionalPanel("input.selection == 'Exponential'",
                          sliderInput(inputId = "exp.rate", label = "Rate",
-                                     min = 0.1, max = 5, value = 1,
-                                     step = 0.1)),
+                                     min = 0.1, max = 10, value = 1,
+                                     step = 0.5)),
         conditionalPanel("input.selection == 'Cauchy'",
                          sliderInput(inputId = "cauchy.location",
                                      label = "Location", min = -5, max = 5,
@@ -111,7 +111,9 @@ ui <- fluidPage(
                                      max = 1, value = 0.5, step = 0.05))),
         mainPanel(
             plotOutput(outputId = "distPlot")
-        )
+        ),
+    h5("Created by:"),
+    tags$a("Vinicius Riffel", href = "https://github.com/vriffel")
 )
 
 server <- function(input, output) {
